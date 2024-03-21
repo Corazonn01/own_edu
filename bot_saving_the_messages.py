@@ -19,4 +19,14 @@ def save_message(message: Message):
     bot.reply_to(message, f'here you have a list with your messages inside the chat: {new_list}')
 
 
+@bot.message_handler(func=lambda message: True)
+def storing(message: Message):
+    with open('members.csv', 'a', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        reader.writerow([message.chat.id, message.from_user.id, message.text])
+
+        return f"Message saved: {message.text}"
+
+
+
 bot.polling()
