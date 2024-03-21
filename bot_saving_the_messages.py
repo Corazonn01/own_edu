@@ -27,9 +27,19 @@ def storing(message: Message):
         bot.send_message(message.chat.id, "your message was stored in csv file")
     print(f"Message saved: {message.text}")
 
+
+@bot.message_handler(func=lambda message: True)
+def show(message: Message):
+    chat_id = message.chat.id
+    with open('members.csv', 'r', newline='') as file:
+        reader = csv.reader(file)
+        messages = [''.join(row) for row in reader]
+
+    bot.send_message(chat_id, "\n".join(messages) if messages else "No messages saved.")
+
 bot.polling()
 
 
 
 
-bot.polling()
+
