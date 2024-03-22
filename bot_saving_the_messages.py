@@ -38,11 +38,15 @@ def show(message: Message):
 
 @bot.message_handler(func=lambda message: True)
 def storing(message: Message):
-    with open('members.csv', 'a', newline='') as csvfile:
+    user_id = message.from_user.id
+    file_name = f'user_{user_id}_messages.csv'
+    with open(file_name, 'a', encoding='utf-8', newline='') as csvfile:
         w = csv.writer(csvfile)
         w.writerow([message.chat.id, message.from_user.id, message.text])
         bot.send_message(message.chat.id, "your message was stored in csv file")
-    print(f"Message saved: {message.text}")
+    print(f"Message saved from user {user_id}: {message.text}")
+
+bot.polling()
 
 
 bot.polling()
